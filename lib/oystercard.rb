@@ -13,4 +13,8 @@ class Oystercard
       raise RuntimeError, "Error! The maximum value your Oystercard can hold is £90."
     end
   end
+
+  def deduct(fare)
+    @balance -= fare
+  end
 end
