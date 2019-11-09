@@ -10,11 +10,26 @@ describe Oystercard do
   end
 
   it 'raises an error if the top up value will exceed the limit' do
-    expect { subject.top_up(91) > Oystercard::Limit }.to raise_error(RuntimeError)
+    expect { subject.top_up(91) > Oystercard::Maximum_Amount }.to raise_error(RuntimeError)
   end
 
   it 'deducts the travel fare' do
     subject.balance = 30
     expect { subject.deduct(15) }.to change { subject.balance }.to(15)
+  end
+
+  it 'ensures the default to not be on a journey' do
+    expect(subject).not_to be_in_journey
+  end
+
+  it 'card touches in' do
+    subject.touch_in
+    expect(subject).to be_in_journey
+  end
+
+  it 'card touches out' do
+    subject.touch_in
+    subject.touch_out
+    expect(subject).not_to be_in_journey
   end
 end
