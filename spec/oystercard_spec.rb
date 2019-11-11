@@ -24,7 +24,7 @@ describe Oystercard do
 
   it "card touches in" do
     subject.balance = Oystercard::Minimum_Amount
-    subject.touch_in
+    subject.touch_in("Barbican")
     expect(subject).to be_in_journey
   end
 
@@ -36,12 +36,18 @@ describe Oystercard do
 
   it "raises an error if the balance is less than the minimum fare" do
     subject.balance < Oystercard::Minimum_Amount
-    expect { subject.touch_in }.to raise_error "Your current balance is less than £1! Top up now to travel."
+    expect { subject.touch_in("Barbican") }.to raise_error "Your current balance is less than £1! Top up now to travel."
   end
 
-  it 'deducts the fare' do
+  it "deducts the fare" do
     subject.top_up(30)
-    subject.touch_in
+    subject.touch_in("Barbican")
     expect { subject.touch_out }.to change { subject.balance }.by(-Oystercard::Minimum_Fare)
+  end
+
+  it "remember entry station on touch in" do
+    subject.top_up(30)
+    subject.touch_in("Barbican")
+    expect(subject.entry_station).to eq("Barbican")
   end
 end
