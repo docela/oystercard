@@ -2,6 +2,7 @@ class Oystercard
   attr_accessor :balance, :in_journey
   Minimum_Amount = 1
   Maximum_Amount = 90
+  Minimum_Fare = 2
 
   def initialize
     @balance = 0
@@ -14,8 +15,8 @@ class Oystercard
       raise RuntimeError, "The maximum value your Oystercard can hold is £90."
     end
   end
-
-  def deduct(fare)
+ 
+  private def deduct(fare)
     @balance -= fare
   end
 
@@ -30,6 +31,7 @@ class Oystercard
   end
 
   def touch_out
+    @balance -= Minimum_Fare
     @in_journey = false
     puts "You have just touched out and have left the station."
   end
